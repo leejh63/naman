@@ -22,10 +22,10 @@ class Postservice(
 ) {
     @Transactional(readOnly = true)
     fun getPost(postId: Long, userId: Long): PostRespones {
-        val post =postRepository.findById(postId).orElseThrow()
+        val post =postRepository.findById(postId).getOrNull()
+            ?: throw InvalidInputException("post", "게시글(${postId})이 존재하지 않는 게시글입니다.")
 
         return PostRespones(
-            id = post.id,
             title = post.title,
             content = post.content,
             createDate = post.createDate,
@@ -35,7 +35,7 @@ class Postservice(
 
     @Transactional(readOnly = true)
     fun getPosts():List<Post>{
-        return postRepository.findAll()
+        return postRepository.findAllByOrderByCreateDateDesc()
     }
 
     @Transactional
@@ -48,7 +48,6 @@ class Postservice(
                     ))
 
         return PostRespones(
-            id = post.id,
             title = post.title,
             content = post.content,
             createDate = post.createDate,

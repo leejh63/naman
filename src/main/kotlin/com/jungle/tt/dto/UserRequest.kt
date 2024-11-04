@@ -60,3 +60,8 @@ data class UsersDtoResponse(
 data class UsersDtoDelete(
     var uId: Long
 )
+
+data class UsersDtoUpdate(
+    var name: String,
+)
+

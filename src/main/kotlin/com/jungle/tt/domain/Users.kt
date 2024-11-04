@@ -22,7 +22,7 @@ class Users (
     val password: String, // 암호화 필요
 
     @Column(nullable = false, length = 10)
-    val name: String
+    var name: String
 
 ){
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
@@ -34,6 +34,11 @@ class Users (
             userId,
             name,
         )
+
+    fun updateName(name: String){
+        this.name = name
+    }
+
 
 }
 

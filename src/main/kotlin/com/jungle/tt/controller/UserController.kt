@@ -9,12 +9,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.ModelAndView
+
 
 @RestController
 @RequestMapping("/api/users")
 class UserController (
     private val userService : UserService
 ) {
+
     @PostMapping("/signup")
     fun signup(@RequestBody @Valid userRequest: UserRequest): BaseResponse<Unit> {
         val resultMsg: String = userService.signUp(userRequest)
@@ -45,15 +48,14 @@ class UserController (
     }
 
     @PutMapping("/info")
-    fun saveMyInfo(@RequestBody @Valid userRequest: UserRequest):
+    fun saveMyInfo(@RequestBody @Valid usersDtoUpdate: UsersDtoUpdate):
             BaseResponse<Unit> {
         val userId = (SecurityContextHolder
             .getContext()
             .authentication
             .principal as CustomUser)
             .uId
-        userRequest.uId = userId
-        val resultMsg: String = userService.saveMyInfo(userRequest)
+        val resultMsg: String = userService.saveMyInfo(userId ,usersDtoUpdate)
         return BaseResponse( message = resultMsg )
     }
 

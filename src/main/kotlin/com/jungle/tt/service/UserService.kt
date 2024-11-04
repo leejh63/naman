@@ -53,8 +53,11 @@ class UserService(
         return users.toDto()
     }
 
-    fun saveMyInfo(userRequest: UserRequest): String {
-        val users = userRequest.toEntity()
+    fun saveMyInfo(uId:Long, usersDtoUpdate: UsersDtoUpdate): String {
+        val users = userRepository.findById(uId).getOrNull()
+            ?: throw InvalidInputException("id", "회원번호(${uId})가 존재하지 않는 유저입니다.")
+
+        users.updateName(usersDtoUpdate.name)
         userRepository.save(users)
         return "수정 완료되었습니다."
     }

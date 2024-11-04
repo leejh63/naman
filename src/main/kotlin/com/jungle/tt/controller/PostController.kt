@@ -8,6 +8,8 @@ import com.jungle.tt.dto.PostUpdateRequest
 import com.jungle.tt.service.Postservice
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.ModelAndView
+
 
 @RestController
 @RequestMapping("/api/posts")
@@ -15,10 +17,13 @@ class PostController(
     private val postService: Postservice
 ) {
 
-    @PostMapping()
+    @PostMapping("/create")
     fun createPost(
         @RequestBody postCreateRequest: PostCreateRequest,
-    ): PostRespones = postService.insertPost(postCreateRequest)
+    ): PostRespones{
+        println(postCreateRequest)
+        return postService.insertPost(postCreateRequest)
+    }
 
     @GetMapping("/{postId}")
     fun getOnePost(
@@ -32,7 +37,7 @@ class PostController(
         return postService.getPost(postId, userId)
     }
 
-    @GetMapping("")
+    @GetMapping("/postssss")
     fun getPosts():List<Post> = postService.getPosts()
 
     @PatchMapping("/patch/{postId}")
